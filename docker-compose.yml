@@ -4,7 +4,7 @@ services:
 
     sharelatex-dev:
       restart: always
-      image: sharelatex/sharelatex
+      image: henryclw/sharelatex:dev
       depends_on:
         mongo-sharelatex-dev:
           condition: service_healthy
