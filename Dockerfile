@@ -1,5 +1,9 @@
 FROM sharelatex/sharelatex:latest
 
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y texlive-xetex
+
 RUN tlmgr update --self
 
 # cost a lot of space, but if you don't install, xelatex can't be used.
