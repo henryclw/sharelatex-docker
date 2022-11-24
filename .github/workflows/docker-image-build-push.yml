@@ -2,9 +2,11 @@ name: Docker Image Build Push
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: '26 13 * * *'
 
 jobs:
   build:
@@ -20,7 +22,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
       - name: Login to Docker Hub
         uses: docker/login-action@master
         with:
