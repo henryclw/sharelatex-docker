@@ -17,12 +17,6 @@ services:
       links:
         - mongo-sharelatex-dev
         - redis-sharelatex-dev
-#      volumes:
-#        - D:/wsl/docker_mount/pacific/sharelatex/sharelatex_data/:/var/lib/sharelatex/
-#        - D:/wsl/docker_mount/pacific/sharelatex/texlive/:/usr/local/texlive/  # /usr/local/texlive/
-      # entrypoint: ["/bin/sh", "-c", "/sbin/my_init & echo start_tlmgr!; tlmgr update --self; tlmgr install scheme-full; echo finish_tlmgr!; bash"]
-      # entrypoint: "/sbin/my_init & echo start_tlmgr!; tlmgr update --self; tlmgr install scheme-full; echo finish_tlmgr!; bash"
-      # entrypoint: "echo start_tlmgr!; tlmgr update --self; tlmgr install scheme-full; echo finish_tlmgr!; /sbin/my_init"
       environment:
         SHARELATEX_APP_NAME: Overleaf Community Edition
         SHARELATEX_MONGO_URL: mongodb://mongo-sharelatex-dev/sharelatex
@@ -43,13 +37,9 @@ services:
 
     mongo-sharelatex-dev:
       restart: always
-      image: mongo:5.0  # mongo:5.0.6 5285cb69ea55
-#      ports:
-#        - "127.0.0.1:8727:27017"
+      image: mongo:5.0
       networks:
         - dev.net.sharelatex
-#      volumes:
-#        - D:/wsl/docker_mount/pacific/mongo/sharelatex_data/:/data/db/
       healthcheck:
         test: echo 'db.stats().ok' | mongo localhost:27017/test --quiet
         interval: 10s
@@ -58,13 +48,9 @@ services:
 
     redis-sharelatex-dev:
       restart: always
-      image: redis:5  # redis:5
-#      ports:
-#        - "127.0.0.1:8728:6379"
+      image: redis:5
       networks:
         - dev.net.sharelatex
-#      volumes:
-#        - D:/wsl/docker_mount/pacific/redis/sharelatex_data/:/data/
 
 networks:
   dev.net.sharelatex:
