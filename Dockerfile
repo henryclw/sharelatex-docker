@@ -7,6 +7,8 @@ RUN apt-get install -y texlive-full
 
 RUN tlmgr update --self
 
+RUN tlmgr update --all
+
 # cost a lot of space, but if you don't install, xelatex can't be used.
 RUN tlmgr install scheme-full
 
