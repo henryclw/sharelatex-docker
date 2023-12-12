@@ -3,8 +3,8 @@ version: "3.9"
 services:
 
     sharelatex-dev:
-      restart: always
-      image: henryclw/sharelatex:dev
+#      restart: always
+      image: henryclw/sharelatex
       depends_on:
         mongo-sharelatex-dev:
           condition: service_healthy
@@ -36,8 +36,9 @@ services:
         SHARELATEX_NAV_TITLE: Our ShareLaTeX Instance
 
     mongo-sharelatex-dev:
-      restart: always
-      image: mongo:5.0
+#      restart: always
+      image: mongo:5.0  # mongo:5.0.6 5285cb69ea55
+      command: "--replSet overleaf"
       networks:
         - dev.net.sharelatex
       healthcheck:
@@ -45,6 +46,21 @@ services:
         interval: 10s
         timeout: 10s
         retries: 5
+
+    mongo-init:
+      image: mongo:5.0
+      restart: no
+      depends_on:
+        mongo-sharelatex-dev:
+          condition: service_healthy
+      entrypoint:
+        [
+          "mongo",
+          "--host",
+          "mongo-sharelatex-dev:27017",
+          "--eval",
+          'rs.initiate({ _id: "overleaf", members: [ { _id: 0, host: "mongo-sharelatex-dev:27017" } ] })',
+        ]
 
     redis-sharelatex-dev:
       restart: always
